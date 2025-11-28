@@ -47,7 +47,10 @@ def login():
         print(password)
         if "' OR '" in password:
             query = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
-            user = conn.execute(query).fetchone()
+            cursor = conn.cursor()
+            cursor.execute(query)
+            user = cursor.fetchone()
+            cursor.close()
         else:
             query = "SELECT * FROM users WHERE username = %s AND password = %s"
             hashed_password = hash_password(password)
